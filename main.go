@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"ps-checker/utils"
+	"time"
 )
 
 var (
@@ -18,38 +20,38 @@ func init() {
 
 func main() {
 
-	utils.PrintLog("nabersin")
+	hasSudo := true
 
-	//hasSudo := true
-	//
-	//isInfinite := true
-	//
-	//
-	//for isInfinite {
-	//
-	//	fmt.Println("checking ps...")
-	//	_, err := utils.CheckPS(psDestination)
-	//
-	//	if err != nil {
-	//		//if error exists, that means process not found
-	//
-	//		stopOP, err := utils.ProcessStop(hasSudo, stopCommands)
-	//		if err != nil {
-	//			fmt.Println(" stop error verdi", err.Error())
-	//		}
-	//
-	//		fmt.Println(stopOP)
-	//		startOP, err := utils.ProcessStart(hasSudo, startCommands)
-	//		if err != nil {
-	//			fmt.Println("start error verdi", err.Error())
-	//		}
-	//
-	//		fmt.Println(startOP)
-	//	} else {
-	//		fmt.Printf("%s is working", psDestination)
-	//	}
-	//
-	//	time.Sleep(time.Second * 5)
-	//}
+	isInfinite := true
+
+	for isInfinite {
+
+		fmt.Println("checking ps...")
+		_, err := utils.CheckPS(psDestination)
+
+		if err != nil {
+			//if error exists, that means process not found
+
+			utils.PrintLog(psDestination + " not found. restarting...")
+
+			stopOP, err := utils.ProcessStop(hasSudo, stopCommands)
+			if err != nil {
+				utils.PrintLog("Error when playing stop.sh command / err: " + err.Error())
+
+			}
+
+			fmt.Println(stopOP)
+			startOP, err := utils.ProcessStart(hasSudo, startCommands)
+			if err != nil {
+				utils.PrintLog("Error when playing start.sh command / err: " + err.Error())
+			}
+
+			fmt.Println(startOP)
+		} else {
+			fmt.Printf("%s is working", psDestination)
+		}
+
+		time.Sleep(time.Second * 5)
+	}
 
 }
