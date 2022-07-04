@@ -36,17 +36,17 @@ func main() {
 
 			stopOP, err := utils.ProcessStop(hasSudo, stopCommands)
 			if err != nil {
-				utils.PrintLog("Error when playing stop.sh command / err: " + err.Error())
+				utils.PrintLog("Error when running stop.sh command / err: " + err.Error())
 
 			}
 
-			fmt.Println(stopOP)
+			fmt.Println("stop.sh output:", stopOP)
 			startOP, err := utils.ProcessStart(hasSudo, startCommands)
 			if err != nil {
-				utils.PrintLog("Error when playing start.sh command / err: " + err.Error())
+				utils.PrintLog("Error when running start.sh command / err: " + err.Error())
 			}
 
-			fmt.Println(startOP)
+			fmt.Println("start.sh output:", startOP)
 		} else {
 			fmt.Printf("%s is working", psDestination)
 		}

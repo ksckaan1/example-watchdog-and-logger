@@ -2,25 +2,28 @@ package utils
 
 import (
 	"fmt"
-	"io"
 	"log"
 	"os"
 	"time"
 )
 
 func PrintLog(text string) {
-	year, month, day := time.Now().Date()
-	logFileName := fmt.Sprintf("%v-%v-%v.log", year, month, day)
+	currentTime := time.Now()
+	date := currentTime.Format("2006-02-01")
+	hour, minute, second := currentTime.Hour(), currentTime.Minute(), currentTime.Second()
+	logFileName := fmt.Sprintf("%s.log", date)
 
 	logFile := checkLogFile(logFileName)
 
 	defer logFile.Close()
 
-	mw := io.MultiWriter(os.Stdout, logFile)
+	logText := fmt.Sprintf("%d:%d:%d log: %s\n", hour, minute, second, text)
+	fmt.Printf(logText)
+	_, err := logFile.WriteString(logText)
+	if err != nil {
+		log.Println(err)
+	}
 
-	log.SetOutput(mw)
-
-	log.Println(text)
 }
 
 func checkLogFile(logPath string) *os.File {
@@ -29,7 +32,7 @@ func checkLogFile(logPath string) *os.File {
 	_, err := os.Stat(logPath)
 
 	if err == nil {
-		logFile, err = os.OpenFile(logPath, os.O_RDWR, 0644)
+		logFile, err = os.OpenFile(logPath, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	} else {
 		logFile, err = os.Create(logPath)
 	}
