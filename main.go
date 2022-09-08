@@ -19,14 +19,15 @@ func init() {
 }
 
 func main() {
+	const duration = 5
 
-	hasSudo := true
+	hasSudo := false // if error occurs, set true
 
 	isInfinite := true
 
 	for isInfinite {
 
-		fmt.Println("checking ps...")
+		fmt.Println("checking ps:", psDestination)
 		_, err := utils.CheckPS(psDestination)
 
 		if err != nil {
@@ -51,7 +52,7 @@ func main() {
 			fmt.Printf("%s is working", psDestination)
 		}
 
-		time.Sleep(time.Second * 5)
+		time.Sleep(time.Second * duration)
 	}
 
 }
